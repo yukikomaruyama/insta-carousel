@@ -1,0 +1,7 @@
+{
+  "notion_data_source_id": "b9c36a2a-1075-419a-85d2-d9cd002efd76",
+  "notion_version": "2025-09-03",
+  "graph_api_version": "v25.0",
+  "claude_model": "claude-sonnet-5-5",
+  "captions_per_run": 5
+}

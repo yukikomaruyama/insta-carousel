@@ -1,0 +1,29 @@
+name: キャプションをつくる
+
+on:
+  schedule:
+    - cron: "17 21-23,0-15 * * *" # 毎時17分ごろ(日本時間 6時〜24時台)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: caption
+  cancel-in-progress: false
+
+jobs:
+  caption:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: 画像を読んでキャプションを書く
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m src.caption

@@ -1,0 +1,24 @@
+name: インスタのトークンを延長する
+
+on:
+  schedule:
+    - cron: "20 18 1,15 * *" # 毎月1日と15日(60日で切れるトークンを早めに延長)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: 延長して Secrets に保存し直す
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: python -m src.refresh_token
